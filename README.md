@@ -11,7 +11,7 @@ This is an early preview release and the syntaxt is not settled. Please add issu
 The easiest way to use this is to create a `KeyboardEventStreamX` stream on an element in a page.
 
 ````dart
-import 'package:ctrl-alt-foo/key_event_x.dart';
+import 'package:ctrl_alt_foo/key_event_x.dart';
 
 KeyboardEventStreamX.onKeyDown(document).listen((e) {
   if (e.isCtrl('N')) {
@@ -32,7 +32,7 @@ KeyboardEventStreamX.onKeyDown(document).listen((e) {
 There are also some helper methods for creating keyboard events:
 
 ````dart
-import 'package:ctrl-alt-foo/helpers.dart';
+import 'package:ctrl_alt_foo/helpers.dart';
 
 typeIn('TEXT'); // will generate a keyup
 

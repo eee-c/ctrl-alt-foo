@@ -6,3 +6,4 @@ authors:
 homepage: https://github.com/eee-c/ctrl-alt-foo
 dependencies:
   unittest: any
+  js: any
