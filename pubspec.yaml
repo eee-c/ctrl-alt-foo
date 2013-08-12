@@ -5,5 +5,5 @@ authors:
 - Chris Strom <chris@eeecomputes.com>
 homepage: https://github.com/eee-c/ctrl-alt-foo
 dependencies:
-  unittest: any
-  js: any
+  unittest: ">=0.6.15+3 <0.6.16"
+  js: ">=0.0.24 <0.0.25"
