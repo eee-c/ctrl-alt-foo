@@ -1,0 +1,8 @@
+name: ctrl_alt_foo
+version: 0.0.1
+description: Keyboard library to make keyboard events in Dart a pleasure.
+authors:
+- Chris Strom <chris@eeecomputes.com>
+homepage: https://github.com/eee-c/ctrl-alt-foo
+dependencies:
+  unittest: any
