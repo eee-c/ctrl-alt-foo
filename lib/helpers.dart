@@ -1,12 +1,17 @@
 import 'dart:html';
 
+import 'key_identifier.dart';
+
 typeIn(String text) {
   document.activeElement.value = text;
 
+  var last_char = new String.fromCharCode(text.runes.last);
   document.activeElement.dispatchEvent(
-    new KeyboardEvent('keyup')
+    new KeyboardEvent(
+      'keyup',
+      keyIdentifier: keyIdentifierFor(last_char)
+    )
   );
-
 }
 
 hitEnter()=> type(KeyName.ENTER);
@@ -28,6 +33,12 @@ type(String key) {
   document.activeElement.dispatchEvent(
     new KeyboardEvent(
       'keydown',
+      keyIdentifier: keyIdentifierFor(key)
+    )
+  );
+  document.activeElement.dispatchEvent(
+    new KeyboardEvent(
+      'keyup',
       keyIdentifier: keyIdentifierFor(key)
     )
   );
@@ -54,11 +65,4 @@ typeCtrlShift(char) {
   );
 }
 
-String keyIdentifierFor(char) {
-  if (char.codeUnits.length != 1) fail("Don't know how to type “$char”");
-
-  // Keys are uppercase (see Event.keyCode)
-  var key = char.toUpperCase();
-
-  return 'U+00' + key.codeUnits.first.toRadixString(16).toUpperCase();
-}
+String keyIdentifierFor(char)=> KeyIdentifier.forChar(char);

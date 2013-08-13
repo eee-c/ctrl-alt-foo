@@ -38,6 +38,38 @@ main(){
     typeCtrlShift('A');
   });
 
+  test("can listen for Enter keys", (){
+    _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
+      expect(e.isEnter, true);
+    }));
+
+    hitEnter();
+  });
+
+  test("can listen for Escape keys", (){
+    _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
+      expect(e.isEscape, true);
+    }));
+
+    hitEscape();
+  });
+
+  test("can listen for down key", (){
+    _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
+      expect(e.isDown, true);
+    }));
+
+    arrowDown();
+  });
+
+  test("can listen for up key", (){
+    _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
+      expect(e.isUp, true);
+    }));
+
+    arrowUp();
+  });
+
   pollForDone(testCases);
 }
 

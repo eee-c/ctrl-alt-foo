@@ -3,9 +3,17 @@ library key_event_x;
 import 'dart:html';
 import 'dart:async';
 
+import 'key_identifier.dart';
+
 class KeyboardEventStreamX extends KeyboardEventStream {
   static Stream<KeyEventX> onKeyPress(target) { throw UnimplementedError; }
-  static Stream<KeyEventX> onKeyUp(target) { throw UnimplementedError; }
+
+  static Stream<KeyEventX> onKeyUp(target) {
+    return Element.
+      keyUpEvent.
+      forTarget(target).
+      map((e)=> new KeyEventX(e));
+  }
 
   static Stream<KeyEventX> onKeyDown(EventTarget target) {
     return Element.
@@ -27,6 +35,11 @@ class KeyEventX extends KeyEvent {
   String get $dom_keyIdentifier => _parent.$dom_keyIdentifier;
   String get keyIdentifier => _parent.$dom_keyIdentifier;
 
+  bool get isEnter => key == KeyIdentifier.keyFor('Enter');
+  bool get isEscape => key == KeyIdentifier.keyFor('Esc');
+  bool get isDown => key == KeyIdentifier.keyFor('Down');
+  bool get isUp => key == KeyIdentifier.keyFor('Up');
+
   bool isCtrl(String char) => ctrlKey && isKey(char);
   bool isKey(String char) => char == key;
 
@@ -41,9 +54,18 @@ class KeyEventX extends KeyEvent {
   }
 
   int get keyCode {
-    if (keyIdentifier != null) return int.parse(keyIdentifier.replaceFirst('U+', '0x'));
+    // print('[keyCode] $keyIdentifier / ${keyIdentifier.codeUnits}');
+    // if (keyIdentifier.codeUnits.length == 0) throw 'hunh?';
+
+    if (_hasKeyIdentifier) return int.parse(keyIdentifier.replaceFirst('U+', '0x'));
     if (_parent.keyCode != 0) return _parent.keyCode;
     return null;
+  }
+
+  bool get _hasKeyIdentifier {
+    if (keyIdentifier == null) return false;
+    if (keyIdentifier.codeUnits.length == 0) return false;
+    return true;
   }
 
   // TODO: Delegate to _parent
