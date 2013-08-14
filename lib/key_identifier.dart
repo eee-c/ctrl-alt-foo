@@ -1,14 +1,16 @@
+library key_identifier;
+
 class KeyIdentifier {
   static final map = {
     'Backspace': 'U+0008',
     'Tab':       'U+0009',
-    'Enter':	   'U+000A',
-    'Esc':	     'U+001B',
-    'Del':	     'U+007F',
-    'Cancel':	   'U+0018',
-    'Spacebar':	 'U+0020',
-    'Tab':	     'U+0009',
-    'Del':	     'U+007F',
+    'Enter':     'U+000A',
+    'Esc':       'U+001B',
+    'Del':       'U+007F',
+    'Cancel':    'U+0018',
+    'Spacebar':  'U+0020',
+    'Tab':       'U+0009',
+    'Del':       'U+007F',
     'Left':      'U+0025',
     'Up':        'U+0026',
     'Right':     'U+0027',
@@ -19,7 +21,7 @@ class KeyIdentifier {
 
   static forChar(c) {
     if (map.containsKey(c)) {
-      return forKeyName(c);
+      return c;
     }
 
     if (c.codeUnits.length > 2) throw "Don't know how to type “$c”";

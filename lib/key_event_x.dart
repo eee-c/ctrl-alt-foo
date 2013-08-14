@@ -8,7 +8,7 @@ import 'key_identifier.dart';
 class KeyboardEventStreamX extends KeyboardEventStream {
   static Stream<KeyEventX> onKeyPress(target) { throw UnimplementedError; }
 
-  static Stream<KeyEventX> onKeyUp(target) {
+  static Stream<KeyEventX> onKeyUp(EventTarget target) {
     return Element.
       keyUpEvent.
       forTarget(target).
@@ -33,9 +33,17 @@ class KeyEventX extends KeyEvent {
   // Avoid bug in KeyEvent
   // https://code.google.com/p/dart/issues/detail?id=11139
   String get $dom_keyIdentifier => _parent.$dom_keyIdentifier;
-  String get keyIdentifier => _parent.$dom_keyIdentifier;
+  String get keyIdentifier {
+    if ($dom_keyIdentifier == null) return null;
+    if ($dom_keyIdentifier.startsWith('U+')) return $dom_keyIdentifier;
+    if (KeyIdentifier.map.containsKey($dom_keyIdentifier)) return KeyIdentifier.map[$dom_keyIdentifier];
+    return null;
+  }
 
-  bool get isEnter => key == KeyIdentifier.keyFor('Enter');
+  bool get isEnter =>
+    key == KeyIdentifier.keyFor('Enter') ||
+    keyCode == 13;
+
   bool get isEscape => key == KeyIdentifier.keyFor('Esc');
   bool get isDown => key == KeyIdentifier.keyFor('Down');
   bool get isUp => key == KeyIdentifier.keyFor('Up');
