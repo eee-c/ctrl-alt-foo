@@ -1,5 +1,5 @@
 name: ctrl_alt_foo
-version: 0.0.3
+version: 0.0.4
 description: Keyboard library to make keyboard events in Dart a pleasure.
 authors:
 - Chris Strom <chris@eeecomputes.com>

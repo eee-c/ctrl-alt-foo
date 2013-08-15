@@ -8,12 +8,9 @@ import 'key_identifier.dart';
 class KeyboardEventStreamX extends KeyboardEventStream {
   static Stream<KeyEventX> onKeyPress(target) { throw UnimplementedError; }
 
-  static Stream<KeyEventX> onKeyUp(EventTarget target) {
-    return Element.
-      keyUpEvent.
-      forTarget(target).
-      map((e)=> new KeyEventX(e));
-  }
+  // The onKeyUp is intentionally unimplemented because there does not seem to
+  // be a way to normalize onKeyUp events for Enter keys (in IE).
+  //static Stream<KeyEventX> onKeyUp(EventTarget target)
 
   static Stream<KeyEventX> onKeyDown(EventTarget target) {
     return Element.
