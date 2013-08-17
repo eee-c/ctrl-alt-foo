@@ -30,12 +30,28 @@ main(){
     typeCtrl('A');
   });
 
+  test("can listen for Command shortcuts (OSX)", (){
+    _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
+      expect(e.isCommand('A'), true);
+    }));
+
+    typeCommand('A');
+  });
+
   test("can listen for Ctrl-Shift shortcuts", (){
     _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
       expect(e.isCtrlShift('A'), true);
     }));
 
     typeCtrlShift('A');
+  });
+
+  test("can listen for Command-Shift shortcuts (OSX)", (){
+    _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
+      expect(e.isCommandShift('A'), true);
+    }));
+
+    typeCommandShift('A');
   });
 
   test("can listen for Enter keys", (){

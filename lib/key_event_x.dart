@@ -46,11 +46,17 @@ class KeyEventX extends KeyEvent {
   bool get isUp => key == KeyIdentifier.keyFor('Up');
 
   bool isCtrl(String char) => ctrlKey && isKey(char);
+  bool isCommand(String char) => metaKey && isKey(char);
   bool isKey(String char) => char == key;
 
   bool isCtrlShift(String char) {
     if (!shiftKey) return false;
     return isCtrl(char);
+  }
+
+  bool isCommandShift(String char) {
+    if (!shiftKey) return false;
+    return isCommand(char);
   }
 
   String get key {

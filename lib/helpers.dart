@@ -54,12 +54,33 @@ typeCtrl(char) {
   );
 }
 
+typeCommand(char) {
+  document.activeElement.dispatchEvent(
+    new KeyboardEvent(
+      'keydown',
+      keyIdentifier: keyIdentifierFor(char),
+      metaKey: true
+    )
+  );
+}
+
 typeCtrlShift(char) {
   document.activeElement.dispatchEvent(
     new KeyboardEvent(
       'keydown',
       keyIdentifier: keyIdentifierFor(char),
       ctrlKey: true,
+      shiftKey: true
+    )
+  );
+}
+
+typeCommandShift(char) {
+  document.activeElement.dispatchEvent(
+    new KeyboardEvent(
+      'keydown',
+      keyIdentifier: keyIdentifierFor(char),
+      metaKey: true,
       shiftKey: true
     )
   );
