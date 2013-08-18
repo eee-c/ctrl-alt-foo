@@ -109,7 +109,7 @@ shortCut(){
 keys(){
   group("Keys", (){
     test("can establish shortcut listerner with a simple map", (){
-      Keys.map({
+      Keys.shortcuts({
         'Esc':          (){},
         'Ctrl+N':       (){},
         'Ctrl+O, ⌘+O':  expectAsync0((){}),

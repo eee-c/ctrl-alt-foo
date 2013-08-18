@@ -11,6 +11,11 @@ class ShortCut {
   var cb;
 
   static List subscriptions = [];
+  static void removeAll() {
+    while (ShortCut.subscriptions.length > 0) {
+      ShortCut.subscriptions.removeLast().cancel();
+    }
+  }
 
   ShortCut(
     this.char,
@@ -21,6 +26,40 @@ class ShortCut {
       this.isMeta: false
     })
   { this._createStream(); }
+
+  factory ShortCut.fromString(String k, callback) {
+    var parts = k.
+      replaceAll('⌘', 'Meta').
+      replaceAll('Command', 'Meta').
+      split('+');
+
+    var key = parts.removeLast();
+
+    parts.sort();
+    switch (parts.join('+')) {
+      case '':
+        new ShortCut(key, callback);
+        break;
+      case 'Ctrl':
+        new ShortCut(key, callback, isCtrl: true);
+        break;
+      case 'Meta':
+        new ShortCut(key, callback, isMeta: true);
+        break;
+      case 'Shift':
+        new ShortCut(key, callback, isShift: true);
+        break;
+      case 'Ctrl+Shift':
+        new ShortCut(key, callback, isCtrl: true, isShift: true);
+        break;
+      case 'Meta+Shift':
+        new ShortCut(key, callback, isCtrl: true, isShift: true);
+        break;
+      default:
+        throw 'Unsupported key combo';
+    }
+  }
+
 
   void cancel()=> subscription.cancel();
 

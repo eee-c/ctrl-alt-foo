@@ -2,30 +2,20 @@
 
 [![Build Status](https://drone.io/github.com/eee-c/ctrl-alt-foo/status.png)](https://drone.io/github.com/eee-c/ctrl-alt-foo/latest)
 
-Keyboard event library to support cross-browser, _testable_ keyboard events. This is an attempt to smooth out some of the current bugs in [KeyEvent](http://api.dartlang.org/docs/releases/latest/dart_html/KeyEvent.html) as well as to add a few helper methods.
+Make it easy to listen for keyboard shortcuts / accelator keys.
 
 ## Usage
 
-This is an early preview release and the syntaxt is not settled. Please add issues in the tracker if you have suggestions. For the most part, this library tries to stay true to `KeyEvent` and the upcoming KeyboardEvent JavaScript interface.
-
-The easiest way to use this is to create a `KeyboardEventStreamX` stream on an element in a page.
+This is an early preview release and the syntax is not settled. Please add issues in the tracker if you have suggestions.
 
 ````dart
-import 'package:ctrl_alt_foo/key_event_x.dart';
+import 'package:ctrl_alt_foo/keys.dart';
 
-KeyboardEventStreamX.onKeyDown(document).listen((e) {
-  if (e.isCtrl('N')) {
-    new NewProjectDialog(this).open();
-    e.preventDefault();
-  }
-  if (e.isCtrl('O')) {
-    new OpenDialog(this).open();
-    e.preventDefault();
-  }
-  if (e.isCtrlShift('H')) {
-    toggleCode();
-    e.preventDefault();
-  }
+Keys.shortcuts({
+  'Esc':          (){ _hideMenu(); _hideDialog(); },
+  'Ctrl+N':       ()=> new NewProjectDialog(this).open(),
+  'Ctrl+O, ⌘+O':  ()=> new OpenDialog(this).open(),
+  'Ctrl+Shift+H': ()=> toggleCode()
 });
 ````
 

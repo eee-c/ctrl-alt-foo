@@ -1,53 +1,56 @@
 library keys;
 
 import 'package:ctrl_alt_foo/shortcut.dart';
+import 'package:ctrl_alt_foo/key_event_x.dart';
 
 class Keys {
-  static void map(Map shortcuts) {
-    shortcuts.forEach(split);
+  static List subscriptions = [];
+
+  static void shortcuts(Map shortcuts) {
+    shortcuts.forEach((key, callback) {
+      key.
+        split(new RegExp(r'\s*,\s*')).
+        forEach((k)=> new ShortCut.fromString(k, callback));
+    });
   }
 
-  static split(key, callback) {
-    var keys = key.split(new RegExp(r'\s*,\s*'));
-    keys.forEach((k) { toShortCut(k, callback); });
+  static onEnter(el, callback) {
+    var s = KeyboardEventStreamX.onKeyDown(el).listen((e) {
+      if (!e.isEnter) return;
+      e.preventDefault();
+      callback();
+    });
+    subscriptions.add(s);
   }
 
-  static toShortCut(String k, callback) {
-    var parts = k.
-      replaceAll('⌘', 'Meta').
-      replaceAll('Command', 'Meta').
-      split('+');
+  static bool isEnter(event) => new KeyEventX(event).isEnter;
 
-    var key = parts.removeLast();
+  static onDown(el, callback) {
+    var s = KeyboardEventStreamX.onKeyDown(el).listen((e) {
+      if (!e.isDown) return;
+      e.preventDefault();
+      callback();
+    });
+    subscriptions.add(s);
+  }
 
-    parts.sort();
-    switch (parts.join('+')) {
-      case '':
-        new ShortCut(key, callback);
-        break;
-      case 'Ctrl':
-        new ShortCut(key, callback, isCtrl: true);
-        break;
-      case 'Meta':
-        new ShortCut(key, callback, isMeta: true);
-        break;
-      case 'Shift':
-        new ShortCut(key, callback, isShift: true);
-        break;
-      case 'Ctrl+Shift':
-        new ShortCut(key, callback, isCtrl: true, isShift: true);
-        break;
-      case 'Meta+Shift':
-        new ShortCut(key, callback, isCtrl: true, isShift: true);
-        break;
-      default:
-        throw 'Unsupported key combo';
-    }
+  static onUp(el, callback) {
+    var s = KeyboardEventStreamX.onKeyDown(el).listen((e) {
+      if (!e.isUp) return;
+      e.preventDefault();
+      callback();
+    });
+    subscriptions.add(s);
   }
 
   static cancel() {
-    while (ShortCut.subscriptions.length > 0) {
-      ShortCut.subscriptions.removeLast().cancel();
+    ShortCut.removeAll();
+    Keys.removeAll();
+  }
+
+  static removeAll() {
+    while (Keys.subscriptions.length > 0) {
+      Keys.subscriptions.removeLast().cancel();
     }
   }
 }
