@@ -1,5 +1,5 @@
 name: ctrl_alt_foo
-version: 0.1.1
+version: 0.1.2
 description: For creating simple keyboard shortcuts.
 authors:
 - Chris Strom <chris@eeecomputes.com>
