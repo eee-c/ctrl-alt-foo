@@ -77,6 +77,8 @@ class KeyEventX extends KeyEvent {
     return null;
   }
 
+  set cancelBubble(bool v) {_parent.cancelBubble = v;}
+
   bool get _hasKeyIdentifier {
     if (keyIdentifier == null) return false;
     if (keyIdentifier.codeUnits.length == 0) return false;
