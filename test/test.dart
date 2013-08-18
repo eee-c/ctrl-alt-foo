@@ -1,17 +1,19 @@
 library ctrl_alt_foo_test;
 
+import 'package:ctrl_alt_foo/keys.dart';
+import 'package:ctrl_alt_foo/shortcut.dart';
 import 'package:ctrl_alt_foo/key_event_x.dart';
+import 'package:ctrl_alt_foo/helpers.dart';
 
 import 'package:unittest/unittest.dart';
 import 'dart:html';
 import 'dart:async';
 
-import 'package:ctrl_alt_foo/helpers.dart';
 
 main(){
   var _s;
   tearDown((){
-    _s.cancel();
+    if (_s != null) _s.cancel();
   });
 
   test("can listen for key events", (){
@@ -22,7 +24,7 @@ main(){
     type('A');
   });
 
-  test("can listen for Ctrl shortcuts", (){
+  skip_test("can listen for Ctrl shortcuts", (){
     _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
       expect(e.isCtrl('A'), true);
     }));
@@ -38,7 +40,7 @@ main(){
     typeCommand('A');
   });
 
-  test("can listen for Ctrl-Shift shortcuts", (){
+  skip_test("can listen for Ctrl-Shift shortcuts", (){
     _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
       expect(e.isCtrlShift('A'), true);
     }));
@@ -86,8 +88,40 @@ main(){
     arrowUp();
   });
 
+  shortCut();
+  keys();
+
   pollForDone(testCases);
 }
+
+shortCut(){
+  group("ShortCut", (){
+    var s;
+    tearDown(()=> s.cancel());
+
+    test("can establish a keyboard shortcut", (){
+      s = new ShortCut('A', expectAsync0((){}), isCtrl: true);
+      typeCtrl('A');
+    });
+  });
+}
+
+keys(){
+  group("Keys", (){
+    test("can establish shortcut listerner with a simple map", (){
+      Keys.map({
+        'Esc':          (){},
+        'Ctrl+N':       (){},
+        'Ctrl+O, ⌘+O':  expectAsync0((){}),
+        'Ctrl+Shift+H': (){}
+      });
+
+      typeCommand('O');
+    });
+  });
+
+}
+
 
 pollForDone(List tests) {
   if (tests.every((t)=> t.isComplete)) {
