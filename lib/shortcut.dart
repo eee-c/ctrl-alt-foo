@@ -29,6 +29,7 @@ class ShortCut {
 
   factory ShortCut.fromString(String k, callback) {
     var parts = k.
+      replaceAll(new RegExp(r'\s+'), '').
       replaceAll('⌘', 'Meta').
       replaceAll('Command', 'Meta').
       split('+');
@@ -56,7 +57,7 @@ class ShortCut {
         new ShortCut(key, callback, isCtrl: true, isShift: true);
         break;
       default:
-        throw 'Unsupported key combo';
+        throw new InvalidShortCutString(k);
     }
   }
 
@@ -89,4 +90,9 @@ class ShortCut {
 class InvalidKeyName extends Error {
   final message;
   InvalidKeyName(this.message): super();
+}
+
+class InvalidShortCutString extends Error {
+  final message;
+  InvalidShortCutString(this.message): super();
 }

@@ -112,6 +112,27 @@ shortCut(){
     test("throws an error for invalid key name (e.g. Esca)", (){
       expect(()=> new ShortCut('Esca', (){}), throwsInvalidKeyName);
     });
+
+    test("throws an error for incorrect modifier placement (Ctrl+O+Shift)", (){
+      expect(
+        ()=> new ShortCut.fromString('Ctrl+O+Shift', (){}),
+        throwsInvalidShortCutString
+      );
+    });
+
+    test("throws an error for invalid modifiers (Ctl+O)", (){
+      expect(
+        ()=> new ShortCut.fromString('Ctl+O', (){}),
+        throwsInvalidShortCutString
+      );
+    });
+
+    test("throws an error for bad attempts at multiples (Ctl+O ⌘+O)", (){
+      expect(
+        ()=> new ShortCut.fromString('Ctl+O ⌘+O', (){}),
+        throwsInvalidShortCutString
+      );
+    });
   });
 }
 
@@ -125,6 +146,18 @@ const Matcher throwsInvalidKeyName =
 class _InvalidKeyName extends TypeMatcher {
   const _InvalidKeyName() : super("InvalidKeyName");
   bool matches(item, Map matchState) => item is InvalidKeyName;
+}
+
+/** A matcher for InvalidShortCutStrings. */
+const isInvalidShortCutString = const _InvalidShortCutString();
+
+/** A matcher for functions that throw InvalidShortCutString. */
+const Matcher throwsInvalidShortCutString =
+    const Throws(isInvalidShortCutString);
+
+class _InvalidShortCutString extends TypeMatcher {
+  const _InvalidShortCutString() : super("InvalidShortCutString");
+  bool matches(item, Map matchState) => item is InvalidShortCutString;
 }
 
 keys(){
