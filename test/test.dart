@@ -103,17 +103,38 @@ shortCut(){
       s = new ShortCut('A', expectAsync0((){}), isCtrl: true);
       typeCtrl('A');
     });
+
+    test("can establish a keyboard shortcut by key name (e.g. Esc)", (){
+      s = new ShortCut('Esc', expectAsync0((){}));
+      hitEscape();
+    });
+
+    test("throws an error for invalid key name (e.g. Esca)", (){
+      expect(()=> new ShortCut('Esca', (){}), throwsInvalidKeyName);
+    });
   });
+}
+
+/** A matcher for InvalidKeyNames. */
+const isInvalidKeyName = const _InvalidKeyName();
+
+/** A matcher for functions that throw InvalidKeyName. */
+const Matcher throwsInvalidKeyName =
+    const Throws(isInvalidKeyName);
+
+class _InvalidKeyName extends TypeMatcher {
+  const _InvalidKeyName() : super("InvalidKeyName");
+  bool matches(item, Map matchState) => item is InvalidKeyName;
 }
 
 keys(){
   group("Keys", (){
     test("can establish shortcut listerner with a simple map", (){
       Keys.shortcuts({
-        'Esc':          (){},
-        'Ctrl+N':       (){},
+        'Esc':          (){ /* ... */ },
+        'Ctrl+N':       (){ /* ... */ },
         'Ctrl+O, ⌘+O':  expectAsync0((){}),
-        'Ctrl+Shift+H': (){}
+        'Ctrl+Shift+H': (){ /* ... */ }
       });
 
       typeCommand('O');

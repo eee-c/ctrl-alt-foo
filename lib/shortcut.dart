@@ -64,7 +64,13 @@ class ShortCut {
   void cancel()=> subscription.cancel();
 
   void _createStream() {
-    var key = char.length == 1 ? char : KeyIdentifier.keyFor(char);
+    var key = char;
+    if (char.length > 1) {
+      if (!KeyIdentifier.containsKey(char)) {
+        throw new InvalidKeyName("$char is not recognized");
+      }
+      key = KeyIdentifier.keyFor(char);
+    }
     subscription = KeyboardEventStreamX.onKeyDown(document).listen((e) {
       if (!e.isKey(key)) return;
 
@@ -78,4 +84,9 @@ class ShortCut {
 
     subscriptions.add(subscription);
   }
+}
+
+class InvalidKeyName extends Error {
+  final message;
+  InvalidKeyName(this.message): super();
 }

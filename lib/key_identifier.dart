@@ -19,6 +19,8 @@ class KeyIdentifier {
 
   static forKeyName(name)=> map[name];
 
+  static containsKey(name) => map.containsKey(name);
+
   static forChar(c) {
     if (map.containsKey(c)) {
       return c;
