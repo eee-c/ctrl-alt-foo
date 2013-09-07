@@ -65,15 +65,15 @@ class ShortCut {
   void cancel()=> subscription.cancel();
 
   void _createStream() {
-    var key = char;
+    var keyCode = char.codeUnits.first;
     if (char.length > 1) {
       if (!KeyIdentifier.containsKey(char)) {
         throw new InvalidKeyName("$char is not recognized");
       }
-      key = KeyIdentifier.keyFor(char);
+      keyCode = KeyIdentifier.forKeyName(char);
     }
     subscription = KeyboardEventStreamX.onKeyDown(document).listen((e) {
-      if (!e.isKey(key)) return;
+      if (e.keyCode != keyCode) return;
 
       if (e.isCtrl  != isCtrl) return;
       if (e.isShift != isShift) return;

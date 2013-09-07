@@ -2,52 +2,22 @@ library key_identifier;
 
 class KeyIdentifier {
   static final map = {
-    'Backspace': 'U+0008',
-    'Tab':       'U+0009',
-    'Enter':     'U+000A',
-    'Esc':       'U+001B',
-    'Del':       'U+007F',
-    'Cancel':    'U+0018',
-    'Spacebar':  'U+0020',
-    'Tab':       'U+0009',
-    'Del':       'U+007F',
-    'Left':      'U+0025',
-    'Up':        'U+0026',
-    'Right':     'U+0027',
-    'Down':      'U+0028'
+    'Backspace': 0x08,
+    'Tab':       0x09,
+    'Enter':     0x0A,
+    'Esc':       0x1B,
+    'Del':       0x7F,
+    'Cancel':    0x18,
+    'Spacebar':  0x20,
+    'Tab':       0x09,
+    'Del':       0x7F,
+    'Left':      0x25,
+    'Up':        0x26,
+    'Right':     0x27,
+    'Down':      0x28
   };
 
-  static forKeyName(name)=> map[name];
+  static bool containsKey(name)=> map.containsKey(name);
 
-  static containsKey(name) => map.containsKey(name);
-
-  static forChar(c) {
-    if (map.containsKey(c)) {
-      return c;
-    }
-
-    if (c.codeUnits.length > 2) throw "Don't know how to type “$c”";
-
-    // Keys are uppercase (see Event.keyCode)
-    var key = c.toUpperCase();
-    var codeUnits = key.codeUnits.length == 1 ?
-      [0, key.codeUnits.first] :
-      key.codeUnits;
-
-    return 'U+' + codeUnits.
-      map((u) {
-        var hex = u.toRadixString(16).toUpperCase();
-        return hex.length == 2 ? hex : '0${hex}';
-      }).
-      join();
-  }
-
-  static String keyFor(String keyName) =>
-    new String.fromCharCode(keyCodeFor(keyName));
-
-  static int keyCodeFor(String keyName) => keyCodeForUnicode(forKeyName(keyName));
-
-  static int keyCodeForUnicode(String u) {
-    return int.parse(u.replaceFirst('U+', '0x'));
-  }
+  static int forKeyName(name)=> map[name];
 }
