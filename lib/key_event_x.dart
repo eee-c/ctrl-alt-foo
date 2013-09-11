@@ -2,8 +2,10 @@ library key_event_x;
 
 import 'dart:html';
 import 'dart:async';
+import 'dart:math';
 
 import 'key_identifier.dart';
+import 'package:js/js.dart' as js;
 
 class KeyboardEventStreamX extends KeyboardEventStream {
   static Stream<KeyEventX> onKeyPress(target) { throw UnimplementedError; }
@@ -12,35 +14,63 @@ class KeyboardEventStreamX extends KeyboardEventStream {
   // be a way to normalize onKeyUp events for Enter keys (in IE).
   //static Stream<KeyEventX> onKeyUp(EventTarget target)
 
+  static void createJsListener() {
+    if (js.hasProperty(js.context, '_dart_key_event_x')) return;
+
+    // TODO: removeListener?
+    js.context.eval('''
+function _dart_key_event_x(target_classname, cb) {
+  var target = (target_classname == '') ?
+     document : document.getElementsByClassName(target_classname)[0];
+  target = document;
+
+  target.addEventListener("keydown", function(event) {
+    cb(event);
+  });
+}''');
+  }
+
   static Stream<KeyEventX> onKeyDown(EventTarget target) {
-    return Element.
-      keyDownEvent.
-      forTarget(target).
-      map((e)=> new KeyEventX(e));
+    var _controller = new StreamController.broadcast();
+
+    var temp_classname = "dart_id-${new Random().nextInt(1000)}";
+    // target.classes.add(temp_classname);
+
+    createJsListener();
+    var dartCallback = new js.Callback.many((event) {
+      _controller.add(new KeyEventX(event));
+    });
+
+    js.context._dart_key_event_x(temp_classname, dartCallback);
+
+    //target.classes.remove(temp_classname);
+
+    return _controller.stream;
   }
 }
 
-class KeyEventX extends KeyEvent {
-  KeyboardEvent _parent;
+class KeyEventX implements KeyEvent {
+  int keyCode;
+  bool ctrlKey, metaKey, shiftKey;
+  var _parent;
 
-  KeyEventX(KeyboardEvent parent): super(parent) {
-    _parent = parent;
+  KeyEventX(KeyboardEvent parent) {
+    keyCode = parent.keyCode;
+    ctrlKey = parent.ctrlKey;
+    metaKey = parent.metaKey;
+    shiftKey = parent.shiftKey;
   }
 
-  bool get isEnter => keyCode == 13;
+  bool get isEnter => keyCode == 10 || keyCode == 13;
 
-  bool get isEscape => key == KeyIdentifier.forKeyName('Esc');
-  bool get isDown => key == KeyIdentifier.forKeyName('Down');
-  bool get isUp => key == KeyIdentifier.forKeyName('Up');
+  bool get isEscape => isKey('Esc');
+  bool get isDown => isKey('Down');
+  bool get isUp => isKey('Up');
 
-  bool get isCtrl => ctrlKey;
-  bool get isShift => shiftKey;
-  bool get isMeta => metaKey;
+  bool isCtrl(String char) => ctrlKey && isKey(char);
+  bool isCommand(String char) => metaKey && isKey(char);
 
-  bool isCtrlAnd(String char) => ctrlKey && keyCode == _keyCode(char);
-  bool isCommand(String char) => metaKey && keyCode == _keyCode(char);
-
-  _keyCode(char) => KeyIdentifier.forKeyName(char);
+  bool isKey(String char)=> KeyIdentifier.keyCodeFor(char) == keyCode;
 
   bool isCtrlShift(String char) {
     if (!shiftKey) return false;
@@ -57,15 +87,10 @@ class KeyEventX extends KeyEvent {
     return new String.fromCharCode(keyCode);
   }
 
-  int get keyCode {
-    // print('[keyCode] $keyIdentifier / ${keyIdentifier.codeUnits}');
-    // if (keyIdentifier.codeUnits.length == 0) throw 'hunh?';
-
-    if (_parent.keyCode != 0) return _parent.keyCode;
-    return null;
-  }
-
   set cancelBubble(bool v) {_parent.cancelBubble = v;}
+
+  // TODO: this should really have an effect
+  void preventDefault() {}
 
   // TODO: Delegate to _parent
   // For now, satisfy dartanalyzer that we are extending properly

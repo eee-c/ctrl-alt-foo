@@ -20,4 +20,11 @@ class KeyIdentifier {
   static bool containsKey(name)=> map.containsKey(name);
 
   static int forKeyName(name)=> map[name];
+
+  static int keyCodeFor(String char) {
+    if (char.codeUnits.length == 1) return char.codeUnits.first;
+    if (containsKey(char)) return forKeyName(char);
+
+    throw new ArgumentError('Unable to determine keyCode for ${char}');
+  }
 }
