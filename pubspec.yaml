@@ -1,9 +1,9 @@
 name: ctrl_alt_foo
-version: 0.1.2
+version: 0.2.0
 description: For creating simple keyboard shortcuts.
 authors:
 - Chris Strom <chris@eeecomputes.com>
 homepage: https://github.com/eee-c/ctrl-alt-foo
 dependencies:
   js: ">=0.0.24 <0.0.25"
-  unittest: ">=0.6.15+3 <0.6.16"
+  unittest: ">=0.7.1 <0.7.2"
