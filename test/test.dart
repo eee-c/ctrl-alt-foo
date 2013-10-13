@@ -16,8 +16,8 @@ main(){
     if (_s != null) _s.cancel();
   });
 
-  test("can listen for key events", (){
-    _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
+  solo_test("can listen for key events", (){
+    _s = ShortCut.stream.listen(expectAsync1((e) {
       expect(e.isKey('A'), true);
     }));
 

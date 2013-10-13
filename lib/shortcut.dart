@@ -3,12 +3,23 @@ library shortcut;
 import 'package:ctrl_alt_foo/key_event_x.dart';
 import 'key_identifier.dart';
 import 'dart:html';
+import 'dart:async';
 
 class ShortCut {
   String char;
   bool isCtrl, isShift, isMeta;
   StreamSubscription subscription;
   var cb;
+
+  static var _stream = KeyboardEventStream.onKeyDown(document.body);
+  static var _streamController = new StreamController.broadcast();
+
+  static get stream {
+    _stream.listen((e) {_streamController.add(new KeyEventX(e));});
+    return _streamController.stream;
+  }
+
+  static void dispatchEvent(KeyEvent e)=> _stream.add(e);
 
   static List subscriptions = [];
   static void removeAll() {

@@ -1,15 +1,16 @@
 import 'dart:html';
 
 import 'key_identifier.dart';
+import 'shortcut.dart';
 
 typeIn(String text) {
   document.activeElement.value = text;
 
   var last_char = new String.fromCharCode(text.runes.last);
   document.activeElement.dispatchEvent(
-    new KeyboardEvent(
+    new KeyEvent(
       'keyup',
-      keyIdentifier: keyIdentifierFor(last_char)
+      keyCode: keyCodeFor(last_char)
     )
   );
 }
@@ -30,25 +31,28 @@ arrowUp([times=1]) {
 }
 
 type(String key) {
-  document.activeElement.dispatchEvent(
-    new KeyboardEvent(
-      'keydown',
-      keyIdentifier: keyIdentifierFor(key)
-    )
+  ShortCut.dispatchEvent(
+    new KeyEvent('keydown', keyCode: keyCodeFor(key))
   );
-  document.activeElement.dispatchEvent(
-    new KeyboardEvent(
-      'keyup',
-      keyIdentifier: keyIdentifierFor(key)
-    )
-  );
+  // new KeyEvent.keyDownEventdocument.activeElement.dispatchEvent(
+  //   new KeyEvent(
+  //     'keydown',
+  //     keyCode: keyCodeFor(key)
+  //   )
+  // );
+  // document.activeElement.dispatchEvent(
+  //   new KeyEvent(
+  //     'keyup',
+  //     keyCode: keyCodeFor(key)
+  //   )
+  // );
 }
 
 typeCtrl(char) {
   document.activeElement.dispatchEvent(
-    new KeyboardEvent(
+    new KeyEvent(
       'keydown',
-      keyIdentifier: keyIdentifierFor(char),
+      keyCode: keyCodeFor(char),
       ctrlKey: true
     )
   );
@@ -58,7 +62,7 @@ typeCommand(char) {
   document.activeElement.dispatchEvent(
     new KeyboardEvent(
       'keydown',
-      keyIdentifier: keyIdentifierFor(char),
+      keyCode: keyCodeFor(char),
       metaKey: true
     )
   );
@@ -68,7 +72,7 @@ typeCtrlShift(char) {
   document.activeElement.dispatchEvent(
     new KeyboardEvent(
       'keydown',
-      keyIdentifier: keyIdentifierFor(char),
+      keyCode: keyCodeFor(char),
       ctrlKey: true,
       shiftKey: true
     )
@@ -79,11 +83,11 @@ typeCommandShift(char) {
   document.activeElement.dispatchEvent(
     new KeyboardEvent(
       'keydown',
-      keyIdentifier: keyIdentifierFor(char),
+      keyCode: keyCodeFor(char),
       metaKey: true,
       shiftKey: true
     )
   );
 }
 
-String keyIdentifierFor(char)=> KeyIdentifier.forChar(char);
+String keyCodeFor(char)=> KeyIdentifier.keyCodeFor(char);
