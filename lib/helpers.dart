@@ -8,7 +8,8 @@ typeIn(String text) {
   var last_char = new String.fromCharCode(text.runes.last);
   document.activeElement.dispatchEvent(
     new KeyboardEvent(
-      'keyup'
+      'keyup',
+      keyIdentifier: keyIdentifierFor(last_char)
     )
   );
 }
