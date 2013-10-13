@@ -24,7 +24,7 @@ main(){
     type('A');
   });
 
-  test("can listen for Ctrl shortcuts", (){
+  skip_test("can listen for Ctrl shortcuts", (){
     _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
       expect(e.isCtrl('A'), true);
     }));
@@ -40,7 +40,7 @@ main(){
     typeCommand('A');
   });
 
-  test("can listen for Ctrl-Shift shortcuts", (){
+  skip_test("can listen for Ctrl-Shift shortcuts", (){
     _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
       expect(e.isCtrlShift('A'), true);
     }));

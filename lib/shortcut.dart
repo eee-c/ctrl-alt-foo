@@ -75,9 +75,9 @@ class ShortCut {
     subscription = KeyboardEventStreamX.onKeyDown(document).listen((e) {
       if (e.keyCode != keyCode) return;
 
-      if (e.ctrlKey  != isCtrl) return;
-      if (e.shiftKey != isShift) return;
-      if (e.metaKey  != isMeta) return;
+      if (e.isCtrl  != isCtrl) return;
+      if (e.isShift != isShift) return;
+      if (e.isMeta  != isMeta) return;
 
       e.preventDefault();
       cb();
