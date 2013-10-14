@@ -16,7 +16,7 @@ main(){
     if (_s != null) _s.cancel();
   });
 
-  solo_test("can listen for key events", (){
+  test("can listen for key events", (){
     _s = ShortCut.stream.listen(expectAsync1((e) {
       expect(e.isKey('A'), true);
     }));
@@ -24,24 +24,24 @@ main(){
     type('A');
   });
 
-  skip_test("can listen for Ctrl shortcuts", (){
-    _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
-      expect(e.isCtrl('A'), true);
+  test("can listen for Ctrl shortcuts", (){
+    _s = ShortCut.stream.listen(expectAsync1((e) {
+      expect(e.isCtrlAnd('A'), true);
     }));
 
     typeCtrl('A');
   });
 
   test("can listen for Command shortcuts (OSX)", (){
-    _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
+    _s = ShortCut.stream.listen(expectAsync1((e) {
       expect(e.isCommand('A'), true);
     }));
 
     typeCommand('A');
   });
 
-  skip_test("can listen for Ctrl-Shift shortcuts", (){
-    _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
+  test("can listen for Ctrl-Shift shortcuts", (){
+    _s = ShortCut.stream.listen(expectAsync1((e) {
       expect(e.isCtrlShift('A'), true);
     }));
 
@@ -49,7 +49,7 @@ main(){
   });
 
   test("can listen for Command-Shift shortcuts (OSX)", (){
-    _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
+    _s = ShortCut.stream.listen(expectAsync1((e) {
       expect(e.isCommandShift('A'), true);
     }));
 
@@ -57,7 +57,7 @@ main(){
   });
 
   test("can listen for Enter keys", (){
-    _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
+    _s = ShortCut.stream.listen(expectAsync1((e) {
       expect(e.isEnter, true);
     }));
 
@@ -65,7 +65,7 @@ main(){
   });
 
   test("can listen for Escape keys", (){
-    _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
+    _s = ShortCut.stream.listen(expectAsync1((e) {
       expect(e.isEscape, true);
     }));
 
@@ -73,7 +73,7 @@ main(){
   });
 
   test("can listen for down key", (){
-    _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
+    _s = ShortCut.stream.listen(expectAsync1((e) {
       expect(e.isDown, true);
     }));
 
@@ -81,7 +81,7 @@ main(){
   });
 
   test("can listen for up key", (){
-    _s = KeyboardEventStreamX.onKeyDown(document).listen(expectAsync1((e) {
+    _s = ShortCut.stream.listen(expectAsync1((e) {
       expect(e.isUp, true);
     }));
 

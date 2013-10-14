@@ -15,23 +15,23 @@ typeIn(String text) {
   );
 }
 
-hitEnter()=> type(KeyName.ENTER);
-hitEscape()=> type(KeyName.ESC);
+hitEnter()=> type('Enter');
+hitEscape()=> type('Esc');
 
 arrowDown([times=1]) {
   new Iterable.generate(times, (i) {
-    type(KeyName.DOWN);
+    type('Down');
   }).toList();
 }
 
 arrowUp([times=1]) {
   new Iterable.generate(times, (i) {
-    type(KeyName.UP);
+    type('Up');
   }).toList();
 }
 
 type(String key) {
-  ShortCut.dispatchEvent(
+  ShortCut.stream.add(
     new KeyEvent('keydown', keyCode: keyCodeFor(key))
   );
   // new KeyEvent.keyDownEventdocument.activeElement.dispatchEvent(
@@ -49,7 +49,7 @@ type(String key) {
 }
 
 typeCtrl(char) {
-  document.activeElement.dispatchEvent(
+  ShortCut.stream.add(
     new KeyEvent(
       'keydown',
       keyCode: keyCodeFor(char),
@@ -59,8 +59,8 @@ typeCtrl(char) {
 }
 
 typeCommand(char) {
-  document.activeElement.dispatchEvent(
-    new KeyboardEvent(
+  ShortCut.stream.add(
+    new KeyEvent(
       'keydown',
       keyCode: keyCodeFor(char),
       metaKey: true
@@ -69,8 +69,8 @@ typeCommand(char) {
 }
 
 typeCtrlShift(char) {
-  document.activeElement.dispatchEvent(
-    new KeyboardEvent(
+  ShortCut.stream.add(
+    new KeyEvent(
       'keydown',
       keyCode: keyCodeFor(char),
       ctrlKey: true,
@@ -80,8 +80,8 @@ typeCtrlShift(char) {
 }
 
 typeCommandShift(char) {
-  document.activeElement.dispatchEvent(
-    new KeyboardEvent(
+  ShortCut.stream.add(
+    new KeyEvent(
       'keydown',
       keyCode: keyCodeFor(char),
       metaKey: true,

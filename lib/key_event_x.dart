@@ -25,12 +25,12 @@ class KeyEventX extends KeyEvent {
   }
 
   bool get isEnter =>
-    key == KeyIdentifier.keyCodeFor('Enter') ||
+    keyCode == KeyIdentifier.keyCodeFor('Enter') ||
     keyCode == 13;
 
-  bool get isEscape => key == KeyIdentifier.keyCodeFor('Esc');
-  bool get isDown => key == KeyIdentifier.keyCodeFor('Down');
-  bool get isUp => key == KeyIdentifier.keyCodeFor('Up');
+  bool get isEscape => keyCode == KeyIdentifier.keyCodeFor('Esc');
+  bool get isDown => keyCode == KeyIdentifier.keyCodeFor('Down');
+  bool get isUp => keyCode == KeyIdentifier.keyCodeFor('Up');
 
   bool get isCtrl => ctrlKey;
   bool get isShift => shiftKey;
@@ -38,21 +38,20 @@ class KeyEventX extends KeyEvent {
 
   bool isCtrlAnd(String char) => ctrlKey && isKey(char);
   bool isCommand(String char) => metaKey && isKey(char);
-  bool isKey(String char) => char == key;
+  bool isKey(String char) {
+    var expected = KeyIdentifier.keyCodeFor(char);
+    // TODO: why!??
+    return '$expected' == '$keyCode';
+  }
 
   bool isCtrlShift(String char) {
     if (!shiftKey) return false;
-    return isCtrl(char);
+    return isCtrlAnd(char);
   }
 
   bool isCommandShift(String char) {
     if (!shiftKey) return false;
     return isCommand(char);
-  }
-
-  String get key {
-    if (keyCode == null) return 'Unidentified';
-    return new String.fromCharCode(keyCode.first);
   }
 
   int get keyCode => _parent.keyCode;

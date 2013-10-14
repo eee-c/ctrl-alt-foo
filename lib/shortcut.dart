@@ -11,15 +11,11 @@ class ShortCut {
   StreamSubscription subscription;
   var cb;
 
-  static var _stream = KeyboardEventStream.onKeyDown(document.body);
-  static var _streamController = new StreamController.broadcast();
-
+  static CustomStream _stream;
   static get stream {
-    _stream.listen((e) {_streamController.add(new KeyEventX(e));});
-    return _streamController.stream;
+    if (_stream == null) _stream = new ShortCutStream('keydown');
+    return _stream;
   }
-
-  static void dispatchEvent(KeyEvent e)=> _stream.add(e);
 
   static List subscriptions = [];
   static void removeAll() {
@@ -72,19 +68,17 @@ class ShortCut {
     }
   }
 
-
   void cancel()=> subscription.cancel();
 
   void _createStream() {
-    var key = char;
     if (char.length > 1) {
       if (!KeyIdentifier.containsKey(char)) {
         throw new InvalidKeyName("$char is not recognized");
       }
-      key = KeyIdentifier.keyFor(char);
     }
-    subscription = KeyboardEventStreamX.onKeyDown(document).listen((e) {
-      if (!e.isKey(key)) return;
+
+    subscription = ShortCut.stream.listen((e) {
+      if (!e.isKey(char)) return;
 
       if (e.isCtrl  != isCtrl) return;
       if (e.isShift != isShift) return;
@@ -95,6 +89,40 @@ class ShortCut {
     });
 
     subscriptions.add(subscription);
+  }
+}
+
+class ShortCutStream<T extends Event> extends Stream<T>
+    implements CustomStream<T> {
+  StreamController<T> _streamController;
+  String _type;
+
+  ShortCutStream(String type) {
+    _type = type;
+    _streamController = new StreamController.broadcast(sync: true);
+
+    document.body.onKeyDown.listen((e) {
+      KeyEvent wrapped_event = new KeyEvent.wrap(e);
+      add(wrapped_event);
+    });
+  }
+
+  StreamSubscription<T> listen(void onData(T event),
+      { Function onError,
+        void onDone(),
+        bool cancelOnError}) {
+    return _streamController.stream.listen(onData, onError: onError,
+        onDone: onDone, cancelOnError: cancelOnError);
+  }
+
+  Stream<T> asBroadcastStream({void onListen(StreamSubscription subscription),
+                               void onCancel(StreamSubscription subscription)})
+      => _streamController.stream;
+
+  bool get isBroadcast => true;
+
+  void add(T event) {
+    if (event.type == _type) _streamController.add(new KeyEventX(event));
   }
 }
 
