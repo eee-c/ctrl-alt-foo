@@ -4,6 +4,13 @@ import 'package:ctrl_alt_foo/shortcut.dart';
 import 'package:ctrl_alt_foo/key_event_x.dart';
 
 class Keys {
+  static int _lastKeyCode;
+  static set lastKeyCode(v) { _lastKeyCode = v; }
+  static get lastKeyCode {
+    print('Horrible hack. FIXME ASAP!!!!');
+    return _lastKeyCode;
+  }
+
   static List subscriptions = [];
 
   static void shortcuts(Map shortcuts) {
