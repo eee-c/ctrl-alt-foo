@@ -35,6 +35,6 @@ class KeyIdentifier {
 
   static _codeFor(String c) {
     if (c.codeUnits.length > 2) throw "Don't know how to type “$c”";
-    return c.codeUnits;
+    return c.codeUnits.first;
   }
 }

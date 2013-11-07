@@ -40,8 +40,7 @@ class KeyEventX extends KeyEvent {
   bool isCommand(String char) => metaKey && isKey(char);
   bool isKey(String char) {
     var expected = KeyIdentifier.keyCodeFor(char);
-    // TODO: why!??
-    return '$expected' == '$keyCode';
+    return expected == keyCode;
   }
 
   bool isCtrlShift(String char) {

@@ -38,6 +38,7 @@ class ShortCut {
     var parts = k.
       replaceAll(new RegExp(r'\s+'), '').
       replaceAll('⌘', 'Meta').
+      replaceAll('âŒ˜', 'Meta').
       replaceAll('Command', 'Meta').
       split('+');
 

@@ -1,8 +1,10 @@
 name: ctrl_alt_foo
-version: 0.2.0
+version: 0.3.0
 description: For creating simple keyboard shortcuts.
 authors:
 - Chris Strom <chris@eeecomputes.com>
 homepage: https://github.com/eee-c/ctrl-alt-foo
+environment:
+  sdk: ">=0.8.10+6 <2.0.0"
 dev_dependencies:
   unittest: any
