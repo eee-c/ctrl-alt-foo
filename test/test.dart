@@ -6,11 +6,13 @@ import 'package:ctrl_alt_foo/key_event_x.dart';
 import 'package:ctrl_alt_foo/helpers.dart';
 
 import 'package:unittest/unittest.dart';
+import 'package:unittest/html_config.dart';
 import 'dart:html';
 import 'dart:async';
 
-
 main(){
+  useHtmlConfiguration();
+
   var _s;
   tearDown((){
     if (_s != null) _s.cancel();
@@ -91,7 +93,7 @@ main(){
   shortCut();
   keys();
 
-  pollForDone(testCases);
+  //pollForDone(testCases);
 }
 
 shortCut(){
@@ -174,15 +176,4 @@ keys(){
     });
   });
 
-}
-
-
-pollForDone(List tests) {
-  if (tests.every((t)=> t.isComplete)) {
-    window.postMessage('done', window.location.href);
-    return;
-  }
-
-  var wait = new Duration(milliseconds: 100);
-  new Timer(wait, ()=> pollForDone(tests));
 }
