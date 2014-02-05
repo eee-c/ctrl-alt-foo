@@ -7,7 +7,7 @@ import 'dart:async';
 
 class ShortCut {
   String char;
-  bool isCtrl, isShift, isMeta;
+  bool isAlt, isCtrl, isShift, isMeta;
   StreamSubscription subscription;
   var cb;
 
@@ -28,6 +28,7 @@ class ShortCut {
     this.char,
     this.cb,
     {
+      this.isAlt: false,
       this.isCtrl: false,
       this.isShift: false,
       this.isMeta: false
@@ -49,6 +50,9 @@ class ShortCut {
       case '':
         new ShortCut(key, callback);
         break;
+      case 'Alt':
+        new ShortCut(key, callback, isAlt: true);
+        break;
       case 'Ctrl':
         new ShortCut(key, callback, isCtrl: true);
         break;
@@ -57,6 +61,12 @@ class ShortCut {
         break;
       case 'Shift':
         new ShortCut(key, callback, isShift: true);
+        break;
+      case 'Alt+Shift':
+        new ShortCut(key, callback, isAlt: true, isShift: true);
+        break;
+      case 'Alt+Ctrl':
+        new ShortCut(key, callback, isAlt: true, isCtrl: true);
         break;
       case 'Ctrl+Shift':
         new ShortCut(key, callback, isCtrl: true, isShift: true);
@@ -81,6 +91,7 @@ class ShortCut {
     subscription = ShortCut.stream.listen((e) {
       if (!e.isKey(char)) return;
 
+      if (e.isAlt   != isAlt) return;
       if (e.isCtrl  != isCtrl) return;
       if (e.isShift != isShift) return;
       if (e.isMeta  != isMeta) return;
