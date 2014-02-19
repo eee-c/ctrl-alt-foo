@@ -84,6 +84,12 @@ class ShortCut {
       if (e.isCtrl  != isCtrl) return;
       if (e.isShift != isShift) return;
       if (e.isMeta  != isMeta) return;
+      if (!isCtrl && !isShift && !isMeta && !(document.activeElement is BodyElement)) {
+        // ignore keypress if not the body is in focus and no modifier was used.
+        // (prevents e.g. input fields from losing input events)
+        return;
+      }
+
 
       e.preventDefault();
       cb();
