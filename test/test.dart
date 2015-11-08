@@ -2,13 +2,13 @@ library ctrl_alt_foo_test;
 
 import 'package:ctrl_alt_foo/keys.dart';
 import 'package:ctrl_alt_foo/shortcut.dart';
-import 'package:ctrl_alt_foo/key_event_x.dart';
+// import 'package:ctrl_alt_foo/key_event_x.dart';
 import 'package:ctrl_alt_foo/helpers.dart';
 
 import 'package:unittest/unittest.dart';
 import 'package:unittest/html_config.dart';
-import 'dart:html';
-import 'dart:async';
+// import 'dart:html';
+// import 'dart:async';
 
 main(){
   useHtmlConfiguration();
@@ -19,7 +19,7 @@ main(){
   });
 
   test("can listen for key events", (){
-    _s = ShortCut.stream.listen(expectAsync1((e) {
+    _s = ShortCut.stream.listen(expectAsync((e) {
       expect(e.isKey('A'), true);
     }));
 
@@ -27,7 +27,7 @@ main(){
   });
 
   test("can listen for Ctrl shortcuts", (){
-    _s = ShortCut.stream.listen(expectAsync1((e) {
+    _s = ShortCut.stream.listen(expectAsync((e) {
       expect(e.isCtrlAnd('A'), true);
     }));
 
@@ -35,7 +35,7 @@ main(){
   });
 
   test("can listen for Command shortcuts (OSX)", (){
-    _s = ShortCut.stream.listen(expectAsync1((e) {
+    _s = ShortCut.stream.listen(expectAsync((e) {
       expect(e.isCommand('A'), true);
     }));
 
@@ -43,7 +43,7 @@ main(){
   });
 
   test("can listen for Ctrl-Shift shortcuts", (){
-    _s = ShortCut.stream.listen(expectAsync1((e) {
+    _s = ShortCut.stream.listen(expectAsync((e) {
       expect(e.isCtrlShift('A'), true);
     }));
 
@@ -51,7 +51,7 @@ main(){
   });
 
   test("can listen for Command-Shift shortcuts (OSX)", (){
-    _s = ShortCut.stream.listen(expectAsync1((e) {
+    _s = ShortCut.stream.listen(expectAsync((e) {
       expect(e.isCommandShift('A'), true);
     }));
 
@@ -59,7 +59,7 @@ main(){
   });
 
   test("can listen for Enter keys", (){
-    _s = ShortCut.stream.listen(expectAsync1((e) {
+    _s = ShortCut.stream.listen(expectAsync((e) {
       expect(e.isEnter, true);
     }));
 
@@ -67,7 +67,7 @@ main(){
   });
 
   test("can listen for Escape keys", (){
-    _s = ShortCut.stream.listen(expectAsync1((e) {
+    _s = ShortCut.stream.listen(expectAsync((e) {
       expect(e.isEscape, true);
     }));
 
@@ -75,7 +75,7 @@ main(){
   });
 
   test("can listen for down key", (){
-    _s = ShortCut.stream.listen(expectAsync1((e) {
+    _s = ShortCut.stream.listen(expectAsync((e) {
       expect(e.isDown, true);
     }));
 
@@ -83,7 +83,7 @@ main(){
   });
 
   test("can listen for up key", (){
-    _s = ShortCut.stream.listen(expectAsync1((e) {
+    _s = ShortCut.stream.listen(expectAsync((e) {
       expect(e.isUp, true);
     }));
 
@@ -102,12 +102,12 @@ shortCut(){
     tearDown(()=> s.cancel());
 
     test("can establish a keyboard shortcut", (){
-      s = new ShortCut('A', expectAsync0((){}), isCtrl: true);
+      s = new ShortCut('A', expectAsync((){}), isCtrl: true);
       typeCtrl('A');
     });
 
     test("can establish a keyboard shortcut by key name (e.g. Esc)", (){
-      s = new ShortCut('Esc', expectAsync0((){}));
+      s = new ShortCut('Esc', expectAsync((){}));
       hitEscape();
     });
 
@@ -168,7 +168,7 @@ keys(){
       Keys.shortcuts({
         'Esc':          (){ /* ... */ },
         'Ctrl+N':       (){ /* ... */ },
-        'Ctrl+O, ⌘+O':  expectAsync0((){}),
+        'Ctrl+O, ⌘+O':  expectAsync((){}),
         'Ctrl+Shift+H': (){ /* ... */ }
       });
 
