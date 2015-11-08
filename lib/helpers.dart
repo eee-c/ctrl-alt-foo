@@ -90,4 +90,4 @@ typeCommandShift(char) {
   );
 }
 
-String keyCodeFor(char)=> KeyIdentifier.keyCodeFor(char);
+int keyCodeFor(char)=> KeyIdentifier.keyCodeFor(char);
