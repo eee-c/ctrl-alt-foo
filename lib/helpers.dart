@@ -48,6 +48,16 @@ type(String key) {
   // );
 }
 
+typeAlt(char) {
+  ShortCut.stream.add(
+    new KeyEvent(
+      'keydown',
+      keyCode: keyCodeFor(char),
+      altKey: true
+    )
+  );
+}
+
 typeCtrl(char) {
   ShortCut.stream.add(
     new KeyEvent(
@@ -68,6 +78,17 @@ typeCommand(char) {
   );
 }
 
+typeAltShift(char) {
+  ShortCut.stream.add(
+    new KeyEvent(
+      'keydown',
+      keyCode: keyCodeFor(char),
+      altKey: true,
+      shiftKey: true
+    )
+  );
+}
+
 typeCtrlShift(char) {
   ShortCut.stream.add(
     new KeyEvent(
@@ -75,6 +96,17 @@ typeCtrlShift(char) {
       keyCode: keyCodeFor(char),
       ctrlKey: true,
       shiftKey: true
+    )
+  );
+}
+
+typeCtrlAlt(char) {
+  ShortCut.stream.add(
+    new KeyEvent(
+      'keydown',
+      keyCode: keyCodeFor(char),
+      ctrlKey: true,
+      altKey: true
     )
   );
 }

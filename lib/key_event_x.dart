@@ -32,10 +32,12 @@ class KeyEventX extends KeyEvent {
   bool get isDown => keyCode == KeyIdentifier.keyCodeFor('Down');
   bool get isUp => keyCode == KeyIdentifier.keyCodeFor('Up');
 
+  bool get isAlt => altKey;
   bool get isCtrl => ctrlKey;
   bool get isShift => shiftKey;
   bool get isMeta => metaKey;
 
+  bool isAltAnd(String char) => isAlt && isKey(char);
   bool isCtrlAnd(String char) => ctrlKey && isKey(char);
   bool isCommand(String char) => metaKey && isKey(char);
   bool isKey(String char) {
@@ -43,6 +45,9 @@ class KeyEventX extends KeyEvent {
     return expected == keyCode;
   }
 
+  bool isCtrlAlt(String char) => isAlt && isCtrlAnd(char);
+  bool isAltShift(String char) => shiftKey && isAltAnd(char);
+  
   bool isCtrlShift(String char) {
     if (!shiftKey) return false;
     return isCtrlAnd(char);

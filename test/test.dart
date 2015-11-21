@@ -26,6 +26,14 @@ main(){
     type('A');
   });
 
+  test("can listen for Alt shortcuts", (){
+    _s = ShortCut.stream.listen(expectAsync1((e) {
+      expect(e.isAltAnd('A'), true);
+    }));
+
+    typeAlt('A');
+  });
+
   test("can listen for Ctrl shortcuts", (){
     _s = ShortCut.stream.listen(expectAsync((e) {
       expect(e.isCtrlAnd('A'), true);
@@ -40,6 +48,22 @@ main(){
     }));
 
     typeCommand('A');
+  });
+
+  test("can listen for Alt-Shift shortcuts", (){
+    _s = ShortCut.stream.listen(expectAsync1((e) {
+      expect(e.isAltShift('A'), true);
+    }));
+
+    typeAltShift('A');
+  });
+
+  test("can listen for Ctrl-Alt shortcuts", (){
+    _s = ShortCut.stream.listen(expectAsync1((e) {
+      expect(e.isCtrlAlt('A'), true);
+    }));
+
+    typeCtrlAlt('A');
   });
 
   test("can listen for Ctrl-Shift shortcuts", (){
